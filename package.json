@@ -1,0 +1,38 @@
+{
+  "name": "ai-llm-studio-alpha",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Offline-first AI LLM Studio Alpha with GGUF + Wllama foundations",
+  "main": "desktop/main.js",
+  "scripts": {
+    "start:web": "python3 -m http.server 4173",
+    "start:desktop": "electron .",
+    "build:exe": "electron-builder --win portable",
+    "mobile:init": "cd mobile && npx cap init AI\\ LLM\\ Studio\\ Alpha com.aillmstudio.alpha",
+    "mobile:add:android": "cd mobile && npx cap add android",
+    "build:apk": "cd mobile && npx cap sync android && cd android && ./gradlew assembleDebug"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3",
+    "@capacitor/cli": "^6.1.2"
+  },
+  "build": {
+    "appId": "com.aillmstudio.alpha",
+    "productName": "AI LLM Studio Alpha",
+    "files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "desktop/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "portable"
+      ]
+    }
+  }
+}
