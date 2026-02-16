@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI LLM Studio Alpha</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>🧠 AI LLM Studio Alpha</h1>
+        <p class="muted">نسخه آلفا - آفلاین، ماژولار، قابل توسعه</p>
+      </div>
+      <div class="row gap">
+        <label class="btn">
+          انتخاب مدل GGUF
+          <input id="modelInput" type="file" accept=".gguf" hidden />
+        </label>
+        <button id="clearMemoryBtn" class="btn danger">پاک‌کردن حافظه</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel">
+        <h2>پروژه‌ها</h2>
+        <form id="projectForm" class="stack">
+          <input id="projectName" type="text" placeholder="نام پروژه" required />
+          <select id="projectLang" required>
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="cpp">C++</option>
+          </select>
+          <textarea id="projectDesc" placeholder="توضیح پروژه"></textarea>
+          <button class="btn" type="submit">ایجاد / بروزرسانی</button>
+        </form>
+        <div class="row gap">
+          <button class="btn" data-export="json">خروجی JSON</button>
+          <button class="btn" data-export="md">خروجی MD</button>
+          <button class="btn" data-export="txt">خروجی TXT</button>
+        </div>
+        <ul id="projectList" class="list"></ul>
+      </aside>
+
+      <section class="panel grow">
+        <h2>چت آفلاین</h2>
+        <div id="chatWindow" class="chat-window"></div>
+        <form id="chatForm" class="row gap">
+          <input id="chatInput" type="text" placeholder="پیام خود را بنویسید..." required />
+          <button class="btn" type="submit">ارسال</button>
+        </form>
+      </section>
+
+      <aside class="panel">
+        <h2>تنظیمات</h2>
+        <div class="stack">
+          <label>دمای مدل
+            <input id="temperature" type="number" min="0" max="2" step="0.1" />
+          </label>
+          <label>حداکثر توکن
+            <input id="maxTokens" type="number" min="64" max="8192" step="64" />
+          </label>
+          <label>
+            <input id="offlineMode" type="checkbox" checked />
+            حالت آفلاین اجباری
+          </label>
+          <button id="saveSettingsBtn" class="btn">ذخیره تنظیمات</button>
+        </div>
+        <hr />
+        <p class="muted">Wllama (llama.cpp): اجرای مستقیم GGUF در مرورگر/اپ بدون سرور.</p>
+        <pre id="modelStatus" class="status">مدل انتخاب نشده است.</pre>
+      </aside>
+    </main>
+
+    <footer class="footer muted">
+      <span>پشتیبانی: Python / JavaScript / C++</span>
+      <span>خروجی: Web + APK + EXE (از طریق Capacitor/Electron)</span>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
