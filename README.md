@@ -34,5 +34,12 @@ npm run tools:kali
 npm run tools:windows
 ```
 
+## رفع خطای اجرای Electron روی Linux/Kali
+اگر در اجرای `npm run desktop:dev` با خطایی شبیه
+`error while loading shared libraries: libatk-1.0.so.0`
+روبرو شدید، اسکریپت‌های `tools:linux` و `tools:kali` اکنون
+پکیج‌های لازم Electron را هم نصب می‌کنند. کافی است دوباره
+اسکریپت نصب ابزارها را اجرا کنید.
+
 ## نکته مهم
 برای اجرای واقعی مدل GGUF باید بخش کامنت‌شده‌ی `lib/wllama-adapter.js` را با تنظیمات واقعی Wllama و فایل‌های wasm/worker تکمیل کنید.
