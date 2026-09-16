@@ -1,0 +1,3 @@
+import { createHash } from "node:crypto"; import { realpath } from "node:fs/promises"; import { basename, join } from "node:path";
+export async function resolveProjectIdentity(root: string, override?: string): Promise<{ id: string; label: string }> { if (override) return { id: override, label: "configured" }; const canonical = await realpath(root); const id = createHash("sha256").update(canonical).digest("hex").slice(0, 24); return { id: `project-${id}`, label: basename(canonical) }; }
+export function defaultMemoryPath(home: string, projectId: string): string { return join(home, ".local-ai-memory", `${projectId}.json`); }

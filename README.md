@@ -1,58 +1,32 @@
-# AI LLM Studio Alpha
+# Local AI Memory Fabric
 
-نسخه اولیه‌ی یک محیط توسعه و اجرای مدل آفلاین که برای وب، دسکتاپ (EXE) و موبایل (APK) طراحی شده است.
+A local-only, reusable TypeScript library that gives CLI agents and future native adapters a shared persistent project-memory layer. It uses local JSON files, in-process calls, and optionally newline-delimited JSON over a spawned process's stdin/stdout. It does not implement a network bridge or model endpoint.
 
-## ویژگی‌ها
+## What is operational in this repository
 
-- رابط کاربری ماژولار با سه فایل مجزا:
-  - `index.html`
-  - `styles.css`
-  - `app.js`
-- پشتیبانی عملیاتی از مدیریت پروژه‌های Python / JavaScript / C++.
-- حافظه دائمی (Persistent Memory) با `localStorage` برای:
-  - تاریخچه گفتگو
-  - تنظیمات مدل
-  - لیست پروژه‌ها
-- پایه‌ی اتصال به **Wllama** برای بارگذاری فایل‌های GGUF.
-- اسکریپت آماده‌سازی خودکار محیط توسعه روی لینوکس/Kali.
-- اسکلت خروجی:
-  - دسکتاپ EXE (Electron)
-  - موبایل APK (Capacitor + Android)
+- Typed memory records with global, project, and session scopes.
+- Atomic local-file persistence; search/ranking; deterministic prompt-context construction.
+- CLI commands for adding, searching, listing, exporting, importing, backup/restore, statistics and diagnostics.
+- A local stdio protocol suitable for an IDE or local agent child process.
+- Strictly allowlisted local execution abstractions.
 
-## اجرا (وب)
-
-```bash
-python3 -m http.server 4173
-# سپس مرورگر: http://localhost:4173
-```
-
-## ساخت EXE
+## Quick start
 
 ```bash
 npm install
-npm run build:exe
+npm test
+npm run memory -- init
+npm run memory -- add --type DECISION "Use local-only shared memory"
+npm run memory -- search "shared memory"
+npm run memory -- doctor
 ```
 
-خروجی داخل پوشه `dist/` ساخته می‌شود.
+The default store is a file under the current user's home directory, namespaced by a hashed canonical project root. Use `--file` to select an explicit local file or `--project` for a stable shared namespace.
 
-## ساخت APK
+## Evidence status
 
-> پیش‌نیاز: Android Studio + SDK + JDK
+The memory core is VM-tested. The LM Studio native plugin is **UNPROVEN** because the SDK is not installed and this Linux VM cannot run the Windows LM Studio GUI. No claim is made that a model invoked a tool or that assistant outputs are automatically captured. See [docs/LIMITATIONS.md](docs/LIMITATIONS.md), [docs/LM_STUDIO_SDK_AUDIT.md](docs/LM_STUDIO_SDK_AUDIT.md), and [docs/WINDOWS_SETUP.md](docs/WINDOWS_SETUP.md).
 
-```bash
-npm install
-npm run mobile:add:android
-npm run build:apk
-```
+## Design
 
-## نصب خودکار ابزارهای برنامه‌نویسی (Kali/Linux)
-
-```bash
-sudo ./setup/setup-dev-env.sh
-```
-
-این اسکریپت نصب پایه ابزارهای Python/Node/C++ را انجام می‌دهد.
-
-## نکته Wllama
-
-در `app.js` بارگذاری Wllama به‌شکل نمونه پیاده‌سازی شده است. برای اجرای کاملاً آفلاین، فایل‌های Wllama را به‌صورت محلی در پروژه قرار دهید و import را از CDN به مسیر محلی تغییر دهید.
+See [ARCHITECTURE.md](ARCHITECTURE.md), [docs/OFFLINE_SECURITY.md](docs/OFFLINE_SECURITY.md), and [AGENTS.md](AGENTS.md). The legacy Electron UI remains a static migration artifact and deliberately does not download or run a model.
