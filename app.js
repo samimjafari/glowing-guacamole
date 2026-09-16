@@ -103,26 +103,13 @@ function renderProjects() {
 async function loadWllamaModel() {
   const modelPath = el.modelPath.value.trim();
   if (!modelPath) {
-    addSystemMessage('لطفاً مسیر مدل GGUF را وارد کنید.');
+    addSystemMessage('لطفاً مسیر مدل محلی را وارد کنید.');
     return;
   }
-
-  el.modelStatus.textContent = 'در حال بارگذاری Wllama...';
-
-  try {
-    // برای اجرای واقعی آفلاین، فایل‌های Wllama را داخل پروژه قرار دهید.
-    // نمونه: ./vendor/wllama/wllama.js
-    const module = await import('https://unpkg.com/@wllama/wllama@latest/dist/index.js');
-    if (!module) throw new Error('ماژول Wllama در دسترس نیست');
-
-    state.modelLoaded = true;
-    el.modelStatus.textContent = `مدل آماده است: ${modelPath}`;
-    addSystemMessage('مدل با موفقیت بارگذاری شد (حالت نمونه).');
-  } catch (error) {
-    state.modelLoaded = false;
-    el.modelStatus.textContent = 'بارگذاری مدل ناموفق بود.';
-    addSystemMessage(`خطا در بارگذاری Wllama: ${error.message}`);
-  }
+  // This legacy UI deliberately does not download or contact model services.
+  state.modelLoaded = false;
+  el.modelStatus.textContent = 'این رابط قدیمی مدل را اجرا نمی‌کند؛ از افزونهٔ بومی LM Studio استفاده کنید.';
+  addSystemMessage('برای اجرای مدل، افزونهٔ بومی LM Studio و کتابخانهٔ حافظهٔ محلی را طبق راهنما نصب کنید.');
 }
 
 async function infer(prompt) {

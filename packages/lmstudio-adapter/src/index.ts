@@ -1,0 +1,7 @@
+/** SDK-independent integration logic. A thin native plugin must call these functions only after its SDK signatures are audited. */
+import { augmentPrompt } from "../../core/src/context.js"; import type { MemoryEngine } from "../../core/src/engine.js"; import type { MemoryInput } from "../../core/src/types.js";
+export interface LmStudioMemoryConfig { projectId: string; sessionId?: string; userId?: string; contextCharacters?: number; }
+export async function preprocessPrompt(engine: MemoryEngine, userPrompt: string, config: LmStudioMemoryConfig): Promise<string> { try { const hits = await engine.search(userPrompt, { projectId: config.projectId, limit: 8 }); return augmentPrompt(userPrompt, hits, config.contextCharacters); } catch { return userPrompt; } }
+export async function storeMemoryTool(engine: MemoryEngine, input: Omit<MemoryInput, "projectId" | "sessionId" | "source">, config: LmStudioMemoryConfig) { return engine.add({ ...input, projectId: config.projectId, sessionId: config.sessionId, source: "lmstudio-tool" }); }
+export async function searchMemoryTool(engine: MemoryEngine, query: string, config: LmStudioMemoryConfig) { return engine.search(query, { projectId: config.projectId, limit: 10 }); }
+export const LM_STUDIO_TOOL_CONTRACT = { memory_store: { description: "Store a durable project memory locally.", fields: ["content", "type", "scope", "confidence", "tags"] }, memory_search: { description: "Search the local shared project memory.", fields: ["query"] } } as const;
